@@ -8,7 +8,7 @@ function menuCommandsUrl(extensionId: string): string {
 async function readCustomFormat(page: Page, context: string, slot: string) {
   return page.evaluate(({ context, slot }: { context: string; slot: string }) => {
     const prefix = `custom_formats.${context}.${slot}`;
-    return chrome.storage.sync.get([`${prefix}.name`, `${prefix}.template`, `${prefix}.show_in_menus`])
+    return chrome.storage.local.get([`${prefix}.name`, `${prefix}.template`, `${prefix}.show_in_menus`])
       .then(stored => ({
         name: stored[`${prefix}.name`],
         template: stored[`${prefix}.template`],
@@ -29,7 +29,7 @@ async function writeCustomFormat(
     values: { name: string; template: string; showInMenus: boolean };
   }) => {
     const prefix = `custom_formats.${context}.${slot}`;
-    return chrome.storage.sync.set({
+    return chrome.storage.local.set({
       [`${prefix}.name`]: values.name,
       [`${prefix}.template`]: values.template,
       [`${prefix}.show_in_menus`]: values.showInMenus,

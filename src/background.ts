@@ -134,7 +134,7 @@ browser.runtime.onStartup.addListener(async () => {
 });
 
 contextMenuService.createAll().then(() => null);
-browser.storage.sync.onChanged.addListener(async (changes) => {
+browser.storage.local.onChanged.addListener(async (changes) => {
   const changedKeys = Object.keys(changes);
   const hasCustomFormatUpdate = changedKeys.includes(CustomFormatsStorage.KeyOfLastUpdate());
   const hasBuiltInStylesUpdate = changedKeys.some(key => BuiltInStyleSettings.keys.includes(key));
@@ -251,7 +251,7 @@ browser.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 });
 
 // Startup migration has completed, so settings changes only require a re-read.
-browser.storage.sync.onChanged.addListener(async (changes) => {
+browser.storage.local.onChanged.addListener(async (changes) => {
   const hasSettingsChanged = Object.keys(changes)
     .some(key => markdownSettingsKeys.includes(key));
   if (!hasSettingsChanged) {

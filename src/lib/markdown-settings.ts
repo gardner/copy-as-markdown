@@ -68,7 +68,7 @@ function isPresent(stored: Record<string, unknown>, key: string): boolean {
 async function resetContext(plan: ContextResetPlan): Promise<void> {
   await ensureMarkdownSettingsMigrated();
 
-  const stored = await browser.storage.sync.get([
+  const stored = await browser.storage.local.get([
     LegacyMarkdownSettingKeys.unorderedList,
     plan.siblingBulletListMarkerKey,
   ]);
@@ -79,14 +79,14 @@ async function resetContext(plan: ContextResetPlan): Promise<void> {
   const siblingIsMaterialized = isBulletListMarker(stored[plan.siblingBulletListMarkerKey]);
 
   if (sharedLegacyMarkerRemains && !siblingIsMaterialized) {
-    await browser.storage.sync.set(plan.defaults);
+    await browser.storage.local.set(plan.defaults);
     if (plan.exclusiveLegacyKeys.length > 0) {
-      await browser.storage.sync.remove(plan.exclusiveLegacyKeys);
+      await browser.storage.local.remove(plan.exclusiveLegacyKeys);
     }
     return;
   }
 
-  await browser.storage.sync.remove([
+  await browser.storage.local.remove([
     ...plan.keys,
     ...plan.exclusiveLegacyKeys,
     ...(sharedLegacyMarkerRemains ? [LegacyMarkdownSettingKeys.unorderedList] : []),

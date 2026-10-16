@@ -7,7 +7,7 @@ function storageKeyOf(context: Context, slot: string, attribute: string): string
 
 export default {
   async get(context: Context, slot: string): Promise<CustomFormat> {
-    const stored = await browser.storage.sync.get({
+    const stored = await browser.storage.local.get({
       [storageKeyOf(context, slot, 'name')]: '',
       [storageKeyOf(context, slot, 'template')]: '',
       [storageKeyOf(context, slot, 'show_in_menus')]: false,
@@ -28,7 +28,7 @@ export default {
 
   /** Visibility is written directly so stale names or templates are not written back. */
   async setShowInMenus(context: Context, slot: string, showInMenus: boolean): Promise<void> {
-    await browser.storage.sync.set({
+    await browser.storage.local.set({
       [storageKeyOf(context, slot, 'show_in_menus')]: showInMenus,
     });
     await this.touch();
@@ -40,7 +40,7 @@ export default {
       context => Slots.map(slot => storageKeyOf(context, slot, 'show_in_menus')),
     );
 
-    await browser.storage.sync.remove(keys);
+    await browser.storage.local.remove(keys);
     await this.touch();
   },
 
@@ -51,12 +51,12 @@ export default {
       [storageKeyOf(context, slot, 'show_in_menus')]: customFormat.showInMenus,
     };
 
-    await browser.storage.sync.set(assignments);
+    await browser.storage.local.set(assignments);
     await this.touch();
   },
 
   async touch(): Promise<void> {
-    await browser.storage.sync.set({ [this.KeyOfLastUpdate()]: new Date().getTime() });
+    await browser.storage.local.set({ [this.KeyOfLastUpdate()]: new Date().getTime() });
   },
 
   KeyOfLastUpdate(): string {

@@ -26,16 +26,16 @@ test('migrates legacy settings on browser restart before any options page opens'
   let context = await launch();
   try {
     const original = await getServiceWorker(context);
-    await original.evaluate(items => chrome.storage.sync.set(items), legacy);
+    await original.evaluate(items => chrome.storage.local.set(items), legacy);
     // Seeding an already running worker must not itself run the startup migration.
-    expect(await original.evaluate(keys => chrome.storage.sync.get(keys), Object.keys(migrated))).toEqual({});
+    expect(await original.evaluate(keys => chrome.storage.local.get(keys), Object.keys(migrated))).toEqual({});
     await context.close();
 
     // A fresh browser runs background.ts against the same persisted legacy profile.
     context = await launch();
     const worker = await getServiceWorker(context);
     expect(worker).not.toBe(original);
-    await expect.poll(() => worker.evaluate(keys => chrome.storage.sync.get(keys), [
+    await expect.poll(() => worker.evaluate(keys => chrome.storage.local.get(keys), [
       ...Object.keys(legacy),
       ...Object.keys(migrated),
     ])).toEqual(migrated);
@@ -46,11 +46,11 @@ test('migrates legacy settings on browser restart before any options page opens'
 });
 
 test('options fallback migrates a running legacy profile and displays the saved preferences after reload', async ({ context, extensionId, serviceWorker }) => {
-  await serviceWorker.evaluate(items => chrome.storage.sync.set(items), legacy);
+  await serviceWorker.evaluate(items => chrome.storage.local.set(items), legacy);
   const options = await context.newPage();
   await options.goto(`chrome-extension://${extensionId}/dist/static/options.html`);
   await expect(options.locator('input[name="bullet-list-marker"][value="*"]')).toBeChecked();
-  await expect.poll(() => serviceWorker.evaluate(keys => chrome.storage.sync.get(keys), [
+  await expect.poll(() => serviceWorker.evaluate(keys => chrome.storage.local.get(keys), [
     ...Object.keys(legacy),
     ...Object.keys(migrated),
   ])).toEqual(migrated);

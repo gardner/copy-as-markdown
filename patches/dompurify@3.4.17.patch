@@ -1,0 +1,17 @@
+diff --git a/dist/purify.es.mjs b/dist/purify.es.mjs
+index c7174af3b3cf80b96179d3a7156c9014d57f1e28..6b604ac428e0ebf7e8557481d29e4075bd828f08 100644
+--- a/dist/purify.es.mjs
++++ b/dist/purify.es.mjs
+@@ -1840,10 +1840,8 @@ function createDOMPurify() {
+ 			doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+ 		} catch (_) {}
+ 		if (!doc || !doc.documentElement) {
+-			doc = implementation.createDocument(NAMESPACE, "template", null);
+-			try {
+-				doc.documentElement.innerHTML = IS_EMPTY_INPUT ? emptyHTML : dirtyPayload;
+-			} catch (_) {}
++			// This extension targets modern browsers: never fall back to an HTML sink.
++			throw new Error("DOMParser failed; refusing unsafe fallback");
+ 		}
+ 		const body = doc.body || doc.documentElement;
+ 		if (dirty && leadingWhitespace) body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);

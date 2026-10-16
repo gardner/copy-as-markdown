@@ -15,7 +15,6 @@ const sharedEntries = [
   'src/ui/custom-format.ts',
   'src/ui/multiple-links.ts',
   'src/ui/menu-commands.ts',
-  'src/ui/advanced.ts',
 ];
 
 function entryPointsFor(target) {
@@ -38,6 +37,8 @@ function copyAssets(target, outdir) {
   const nodeModules = path.join(root, 'node_modules');
   const assets = [
     { src: path.join(nodeModules, 'bulma', 'css', 'bulma.css'), dest: 'bulma.css' },
+    { src: path.join(nodeModules, 'dompurify', 'dist', 'purify.es.mjs'), dest: 'purify.es.mjs' },
+    { src: path.join(nodeModules, 'dompurify', 'LICENSE'), dest: 'DOMPurify-LICENSE' },
   ];
   if (target === 'chrome') {
     assets.unshift({
@@ -54,6 +55,11 @@ function polyfillResolverPlugin(target) {
   return {
     name: 'polyfill-resolver',
     setup(build) {
+      // Ship the sanitizer separately with its license and the committed fallback-removal patch.
+      build.onResolve({ filter: /^dompurify$/ }, () => ({
+        path: '/dist/vendor/purify.es.mjs',
+        external: true,
+      }));
       build.onResolve({ filter: /^\/dist\/vendor\/browser-polyfill\.js$/ }, () => (
         target === 'chrome'
           ? { path: '/dist/vendor/browser-polyfill.js', external: true }
@@ -82,7 +88,7 @@ export async function buildExtension({ target, outdir, profile = 'production', w
     treeShaking: true,
     outdir,
     outbase: srcDir,
-    sourcemap: 'linked',
+    sourcemap: profile === 'e2e' ? 'linked' : false,
     sourcesContent: true,
     minify: false,
     minifySyntax: profile === 'production', // DCE for production: eliminates BUILD_PROFILE dead branches

@@ -35,4 +35,17 @@ export default antfu({
     'test/no-import-node-test': 'off',
     'perfectionist/sort-imports': 'off',
   },
+}, {
+  files: ['src/**/*.ts'],
+  rules: {
+    'max-lines': ['error', { max: 500, skipBlankLines: true, skipComments: true }],
+    'complexity': ['error', 25],
+  },
+}, {
+  // Imported dispatcher baseline; new code retains the lower limits below.
+  files: ['src/handlers/context-menu-handler.ts'],
+  rules: { complexity: ['error', 37] },
+}, {
+  files: ['src/lib/safe-*.ts'],
+  rules: { complexity: ['error', 12] },
 });

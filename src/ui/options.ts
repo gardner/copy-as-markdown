@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-browser.storage.sync.onChanged.addListener(async (changes) => {
+browser.storage.local.onChanged.addListener(async (changes) => {
   const hasSettingsChanged = Object.keys(changes).some(key => SelectionSettings.keys.includes(key));
   if (hasSettingsChanged) {
     await refresh();

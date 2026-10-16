@@ -1,8 +1,13 @@
-# Copy as Markdown for Chrome & Firefox
+# Copy as Markdown (Gardner fork)
+
+This fork adds audited parsing hardening, local-only settings, and an independent
+Firefox signing/GitHub Release workflow. See the [security audit](docs/SECURITY_AUDIT.md)
+and [build and publishing guide](docs/FIREFOX_PUBLISHING.md). It has its own add-on
+identity and is not the upstream store release linked below.
 
 Do you often type Markdown code manually for a link or image, or even all tabs in a window, and feel tired? **Copy as Markdown** can help you!
 
-## Download
+## Upstream store releases
 
 * Google Chrome: [Chrome Web Store - Copy as Markdown](https://chrome.google.com/webstore/detail/copy-as-markdown/fkeaekngjflipcockcnpobkpbbfbhmdn)
 * Firefox: [Copy as Markdown :: Add-ons for Firefox](https://addons.mozilla.org/firefox/addon/copy-as-markdown/)

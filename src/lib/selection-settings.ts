@@ -85,7 +85,7 @@ export default {
    * they may belong to a newer version.
    */
   async getAll(): Promise<SelectionMarkdownSettings> {
-    const stored = await browser.storage.sync.get(this.keys);
+    const stored = await browser.storage.local.get(this.keys);
     const bulletListMarker = stored[SelectionSettingKeys.bulletListMarker];
     const codeBlockStyle = stored[SelectionSettingKeys.codeBlockStyle];
     const emDelimiter = stored[SelectionSettingKeys.emDelimiter];
@@ -114,48 +114,48 @@ export default {
   },
 
   async setBulletListMarker(value: BulletListMarker): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.bulletListMarker]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.bulletListMarker]: value });
   },
 
   async setEmDelimiter(value: EmDelimiter): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.emDelimiter]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.emDelimiter]: value });
   },
 
   async setStrongDelimiter(value: StrongDelimiter): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.strongDelimiter]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.strongDelimiter]: value });
   },
 
   async setHeadingStyle(value: HeadingStyle): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.headingStyle]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.headingStyle]: value });
   },
 
   async setFence(value: Fence): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.fence]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.fence]: value });
   },
 
   async setLinkStyle(value: LinkStyle): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.linkStyle]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.linkStyle]: value });
   },
 
   async setLinkReferenceStyle(value: LinkReferenceStyle): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.linkReferenceStyle]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.linkReferenceStyle]: value });
   },
 
   /** A referenced output choice updates both keys together, avoiding an intermediate format. */
   async setReferencedLinkStyle(value: LinkReferenceStyle): Promise<void> {
-    await browser.storage.sync.set({
+    await browser.storage.local.set({
       [SelectionSettingKeys.linkStyle]: 'referenced',
       [SelectionSettingKeys.linkReferenceStyle]: value,
     });
   },
 
   async setCodeBlockStyle(value: CodeBlockStyle): Promise<void> {
-    await browser.storage.sync.set({ [SelectionSettingKeys.codeBlockStyle]: value });
+    await browser.storage.local.set({ [SelectionSettingKeys.codeBlockStyle]: value });
   },
 
   /** A fenced choice updates both keys together, avoiding an intermediate format. */
   async setFencedCodeBlockStyle(value: Fence): Promise<void> {
-    await browser.storage.sync.set({
+    await browser.storage.local.set({
       [SelectionSettingKeys.codeBlockStyle]: 'fenced',
       [SelectionSettingKeys.fence]: value,
     });

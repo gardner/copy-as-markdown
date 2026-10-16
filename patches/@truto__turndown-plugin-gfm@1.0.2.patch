@@ -1,0 +1,13 @@
+diff --git a/lib/index.js b/lib/index.js
+index fc2218ba0df3a79e872dfffe98b5dddd52277f0e..afbd73930c8768bf1496fbe8e528fc310417051f 100644
+--- a/lib/index.js
++++ b/lib/index.js
+@@ -23,7 +23,7 @@ function strikethrough(turndownService) {
+ var rules = {};
+ function cleanCellContent(content) {
+   if (!content) return "   ";
+-  let cleaned = content.trim().replace(/\s+/g, " ").replace(/\|/g, "\\|").replace(/\\/g, "\\\\").replace(/\n+/g, " ").replace(/\r+/g, " ");
++  let cleaned = content.trim().replace(/\s+/g, " ").replace(/\|/g, "\\|").replace(/\n+/g, " ").replace(/\r+/g, " ");
+   if (!cleaned || cleaned.match(/^\s*$/)) {
+     return "   ";
+   }

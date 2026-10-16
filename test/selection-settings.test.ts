@@ -61,7 +61,7 @@ describe('selection settings', () => {
       [SelectionSettingKeys.linkReferenceStyle]: 'collapsed',
     };
     const before = { ...storage.data };
-    const set = vi.spyOn(browser.storage.sync, 'set');
+    const set = vi.spyOn(browser.storage.local, 'set');
     expect(await SelectionSettings.getAll()).toEqual({
       ...defaults,
       codeBlockStyle: 'indented',
@@ -104,7 +104,7 @@ describe('selection settings', () => {
 
   it.each(['```', '~~~'] as const)('writes fenced style and fence %s together', async (fence) => {
     await SelectionSettings.setCodeBlockStyle('indented');
-    const set = vi.spyOn(browser.storage.sync, 'set');
+    const set = vi.spyOn(browser.storage.local, 'set');
 
     await SelectionSettings.setFencedCodeBlockStyle(fence);
 
@@ -124,7 +124,7 @@ describe('selection settings', () => {
   });
 
   it.each(['full', 'collapsed', 'shortcut'] as const)('writes referenced %s output in a single storage update', async (value) => {
-    const set = vi.spyOn(browser.storage.sync, 'set');
+    const set = vi.spyOn(browser.storage.local, 'set');
     await SelectionSettings.setReferencedLinkStyle(value);
     expect(set).toHaveBeenCalledTimes(1);
     expect(set).toHaveBeenCalledWith({

@@ -41,11 +41,11 @@ async function loadPage(): Promise<void> {
 
 // Browser-mode module imports can stay cached between tests, so retain the registered callback
 // independently of mock call history, which beforeEach clears.
-let storageChangeListener: Parameters<typeof browser.storage.sync.onChanged.addListener>[0];
+let storageChangeListener: Parameters<typeof browser.storage.local.onChanged.addListener>[0];
 
 function mockBrowser(): void {
   (globalThis as any).browser = {
-    storage: { sync: { onChanged: { addListener: vi.fn((listener) => {
+    storage: { local: { onChanged: { addListener: vi.fn((listener) => {
       storageChangeListener = listener;
     }) } } },
   };

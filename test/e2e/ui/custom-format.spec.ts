@@ -8,7 +8,7 @@ async function clearCustomFormatStorage(page: any, slot: string, context: string
       `custom_formats.${context}.${slot}.template`,
       `custom_formats.${context}.${slot}.show_in_menus`,
     ];
-    return chrome.storage.sync.remove(keys);
+    return chrome.storage.local.remove(keys);
   }, { slot, context });
 }
 

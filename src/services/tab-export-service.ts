@@ -3,6 +3,7 @@ import type { NestedArray } from '../lib/markdown.js';
 import type { TabList } from '../lib/tabs.js';
 import { Tab, TabGroup, TabListGrouper } from '../lib/tabs.js';
 import CustomFormatClass from '../lib/custom-format.js';
+import { escapeLabel, safeDestination } from '../lib/safe-markdown.js';
 import type { CustomFormatsProvider, MarkdownFormatter } from './shared-types.js';
 import { createBrowserTabDataFetcher } from './browser-tab-data-fetcher.js';
 
@@ -35,14 +36,14 @@ export function convertBrowserTabsToTabs(
 ): Tab[] {
   return browserTabs.map(tab => new Tab(
     escapeLinkText(tab.title || ''),
-    tab.url || '',
+    safeDestination(tab.url || ''),
     tab.groupId || TabGroup.NonGroupId,
   ));
 }
 
 export function convertBrowserTabGroups(groups: chrome.tabGroups.TabGroup[]): TabGroup[] {
   return groups.map((group: chrome.tabGroups.TabGroup) =>
-    new TabGroup(group.title || '', group.id, group.color || ''),
+    new TabGroup(escapeLabel(group.title || ''), group.id, group.color || ''),
   );
 }
 
@@ -161,7 +162,7 @@ export class TabExportService {
 
     const tabs = convertBrowserTabsToTabs(
       browserTabs,
-      text => this.markdown.escapeLinkText(text),
+      options.format === 'link' ? text => text : escapeLabel,
     );
     const groups = convertBrowserTabGroups(browserGroups);
     const tabLists = groupTabsIntoLists(tabs, groups);

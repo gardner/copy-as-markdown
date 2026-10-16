@@ -10,7 +10,7 @@ function has(target: Record<string, unknown>, key: string): boolean {
   return Object.prototype.hasOwnProperty.call(target, key);
 }
 
-/** Creates an installable storage.sync fake with native get semantics and one-shot write failures. */
+/** Creates an installable storage.local fake with native get semantics and one-shot write failures. */
 export function createFakeSyncStorage(
   initial: Record<string, unknown> = {},
 ): FakeSyncStorage {
@@ -63,7 +63,7 @@ export function createFakeSyncStorage(
 
   return Object.assign(state, {
     install() {
-      (globalThis as any).browser = { storage: { sync } };
+      (globalThis as any).browser = { storage: { local: sync } };
     },
     uninstall() {
       delete (globalThis as any).browser;

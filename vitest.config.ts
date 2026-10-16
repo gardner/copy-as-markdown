@@ -18,6 +18,13 @@ export default defineConfig({
   test: {
     projects: [
       {
+        test: {
+          name: 'security-dom',
+          include: ['test/lib/**/*.spec.ts'],
+          environment: 'jsdom',
+        },
+      },
+      {
         resolve: { alias: polyfillAlias },
         define: { BUILD_PROFILE: JSON.stringify('e2e') },
         test: {

@@ -1,3 +1,5 @@
+import { escapeLabel, safeDestination } from './safe-markdown.js';
+
 export type NestedArray = (string | NestedArray)[];
 
 /** Persisted verbatim and emitted as the unordered-list marker. */
@@ -117,21 +119,21 @@ export default class Markdown {
   }
 
   linkTo(title: string, url: string): string {
-    let titleToUse: string;
-    if (title === '') {
-      titleToUse = Markdown.DefaultTitle();
-    } else {
-      titleToUse = this.escapeLinkText(title);
-    }
-    return `[${titleToUse}](${url})`;
+    const label = escapeLabel(title || Markdown.DefaultTitle());
+    const destination = safeDestination(url);
+    return destination ? `[${label}](${destination})` : label;
   }
 
   static imageFor(title: string, url: string): string {
-    return `![${title}](${url})`;
+    const label = escapeLabel(title);
+    const destination = safeDestination(url, true);
+    return destination ? `![${label}](${destination})` : label;
   }
 
   static linkedImage(description: string, url: string, linkURL: string): string {
-    return `[![${description}](${url})](${linkURL})`;
+    const image = Markdown.imageFor(description, url);
+    const destination = safeDestination(linkURL);
+    return destination ? `[${image}](${destination})` : image;
   }
 
   list(items: NestedArray): string {

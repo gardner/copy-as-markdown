@@ -1,5 +1,6 @@
 import type Markdown from './lib/markdown.js';
 import type { NestedArray } from './lib/markdown.js';
+import { escapeLabel } from './lib/safe-markdown.js';
 
 export class Bookmarks {
   private _markdown: Markdown;
@@ -14,14 +15,14 @@ export class Bookmarks {
     }
 
     if (typeof bookmark.children === 'undefined') {
-      return [bookmark.title];
+      return [escapeLabel(bookmark.title)];
     }
 
     const children = bookmark.children.map(bm => this.aggregate(bm));
     if (children.length === 0) {
-      return [bookmark.title];
+      return [escapeLabel(bookmark.title)];
     }
-    return [bookmark.title, children];
+    return [escapeLabel(bookmark.title), children];
   }
 
   toMarkdown(bookmark: browser.bookmarks.BookmarkTreeNode): string {

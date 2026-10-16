@@ -4,6 +4,9 @@
 import type { Rule, Options as TurndownOptions } from 'turndown';
 import { tables } from '@truto/turndown-plugin-gfm';
 import TurndownService from 'turndown';
+import Markdown from './markdown.js';
+import { parseSelection } from './safe-selection.js';
+import { safeCodeRule } from './safe-code-rule.js';
 
 // Turndown wraps <p> with blank lines, and inside <li> that becomes an indented
 // blank line between bullet items (e.g. "- item\n    \n- item"), which breaks
@@ -29,10 +32,24 @@ const singleParagraphInListItemRule: Rule = {
  * document or Firefox's Event Page, never Chrome's service worker.
  */
 export function htmlToMarkdown(html: string, options: TurndownOptions): string {
+  const selection = parseSelection(html);
   const turndownService = new TurndownService(options)
     .remove('script')
     .remove('style');
   turndownService.use(tables);
   turndownService.addRule('singleParagraphInListItem', singleParagraphInListItemRule);
-  return turndownService.turndown(html).replace(/\n+$/, '');
+  turndownService.addRule('safeCodeFence', safeCodeRule);
+  const escape = turndownService.escape.bind(turndownService);
+  turndownService.escape = text => escape(text)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+  turndownService.addRule('safeImage', {
+    filter: 'img',
+    replacement: (_content, node) => {
+      const element = node as HTMLElement;
+      return Markdown.imageFor(element.getAttribute('alt') || '', element.getAttribute('src') || '');
+    },
+  });
+  return turndownService.turndown(selection).replace(/\n+$/, '');
 }

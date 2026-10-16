@@ -156,13 +156,13 @@ describe('menu visibility settings', () => {
 
     function recordWrittenKeys(): () => string[] {
       const written: string[] = [];
-      const { set, remove } = browser.storage.sync;
+      const { set, remove } = browser.storage.local;
 
-      vi.spyOn(browser.storage.sync, 'set').mockImplementation(async (items) => {
+      vi.spyOn(browser.storage.local, 'set').mockImplementation(async (items) => {
         written.push(...Object.keys(items as Record<string, unknown>));
         await set(items);
       });
-      vi.spyOn(browser.storage.sync, 'remove').mockImplementation(async (keys) => {
+      vi.spyOn(browser.storage.local, 'remove').mockImplementation(async (keys) => {
         written.push(...(Array.isArray(keys) ? keys : [keys]));
         await remove(keys);
       });

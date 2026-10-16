@@ -21,7 +21,7 @@ test('applies combined syntax through both selection handlers without reloading 
     'custom_formats.multiple-links.1.name': 'Multiple',
     'custom_formats.multiple-links.1.template': '{{#links}}{{title}}: {{url}}{{/links}}',
   };
-  await serviceWorker.evaluate(items => chrome.storage.sync.set(items), unrelated);
+  await serviceWorker.evaluate(items => chrome.storage.local.set(items), unrelated);
 
   const options = await context.newPage();
   await options.goto(`chrome-extension://${extensionId}/dist/static/options.html`);
@@ -71,7 +71,7 @@ test('applies combined syntax through both selection handlers without reloading 
     'selection.markdown.linkStyle': 'referenced',
     'selection.markdown.linkReferenceStyle': 'shortcut',
   };
-  await expect.poll(() => serviceWorker.evaluate(keys => chrome.storage.sync.get(keys), Object.keys(configured))).toEqual(configured);
+  await expect.poll(() => serviceWorker.evaluate(keys => chrome.storage.local.get(keys), Object.keys(configured))).toEqual(configured);
 
   const prefix = 'Heading\n=======\n\n*italic* and __bold__ with ';
   const suffix = '\n\n+   item\n\n~~~js\nconst x = 1;\n~~~';
@@ -124,5 +124,5 @@ test('applies combined syntax through both selection handlers without reloading 
   await expect(links.getByRole('radio', { name: /^Inline\b/ })).toBeChecked();
   await expect(options.getByRole('group', { name: 'Heading style' }).getByRole('radio', { name: /ATX/ })).toBeChecked();
   expect(await copySelection('command')).toBe(defaults);
-  expect(await serviceWorker.evaluate(keys => chrome.storage.sync.get(keys), Object.keys(unrelated))).toEqual(unrelated);
+  expect(await serviceWorker.evaluate(keys => chrome.storage.local.get(keys), Object.keys(unrelated))).toEqual(unrelated);
 });

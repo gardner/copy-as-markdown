@@ -1,4 +1,5 @@
 import type { CustomFormatsProvider, MarkdownFormatter } from './shared-types.js';
+import { escapeLabel, safeDestination } from '../lib/safe-markdown.js';
 
 export type LinkExportFormat = 'link' | 'custom-format';
 
@@ -25,7 +26,7 @@ export async function renderCustomFormatLink(
   const customFormat = await customFormatsProvider.get('single-link', slot);
   const input = {
     title: formatTitle(title),
-    url,
+    url: safeDestination(url),
     number: 1,
   };
   return customFormat.render(input);
@@ -56,7 +57,7 @@ export class LinkExportService {
           options.customFormatSlot!,
           // TODO: implement flexible title formatter.
           // See https://github.com/yorkxin/copy-as-markdown/issues/133
-          text => this.markdown.escapeLinkText(text),
+          escapeLabel,
           this.customFormatsProvider,
         );
 

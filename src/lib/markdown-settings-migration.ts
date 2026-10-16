@@ -44,7 +44,7 @@ function legacyCodeBlockStyle(value: unknown): CodeBlockStyle | null {
  */
 export async function migrateMarkdownSettings(): Promise<MarkdownSettingsMigrationResult> {
   const legacyKeys = Object.values(LegacyMarkdownSettingKeys) as string[];
-  const stored = await browser.storage.sync.get([
+  const stored = await browser.storage.local.get([
     ...legacyKeys,
     ...SelectionSettings.keys,
     ...MultipleLinksSettings.keys,
@@ -78,7 +78,7 @@ export async function migrateMarkdownSettings(): Promise<MarkdownSettingsMigrati
 
   if (Object.keys(updates).length > 0) {
     try {
-      await browser.storage.sync.set(updates);
+      await browser.storage.local.set(updates);
     } catch (error) {
       return { status: 'write-failed', error };
     }
@@ -94,7 +94,7 @@ export async function migrateMarkdownSettings(): Promise<MarkdownSettingsMigrati
   }
 
   try {
-    await browser.storage.sync.remove(presentLegacyKeys);
+    await browser.storage.local.remove(presentLegacyKeys);
   } catch (error) {
     return { status: 'removal-failed', error };
   }

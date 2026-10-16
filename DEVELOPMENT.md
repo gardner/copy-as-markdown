@@ -1,3 +1,6 @@
+> Gardner fork: use [the maintained build and publishing guide](docs/FIREFOX_PUBLISHING.md).
+> The upstream development notes below are retained for historical context; this fork uses pnpm and its own release scripts.
+
 # Development
 
 Canonical instructions for developing, building, and testing **Copy as Markdown**.

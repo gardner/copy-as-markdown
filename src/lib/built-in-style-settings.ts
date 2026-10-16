@@ -44,7 +44,7 @@ export default {
   defaultSettings,
 
   async getAll(): Promise<BuiltInStyleSettings> {
-    const stored = await browser.storage.sync.get(toStorage(defaultSettings));
+    const stored = await browser.storage.local.get(toStorage(defaultSettings));
 
     return {
       singleLink: Boolean(stored[StorageKeys.singleLink]),
@@ -56,11 +56,11 @@ export default {
   },
 
   async set(key: BuiltInStyleKey, value: boolean): Promise<void> {
-    await browser.storage.sync.set({ [StorageKeys[key]]: value });
+    await browser.storage.local.set({ [StorageKeys[key]]: value });
   },
 
   /** Removes overrides so every built-in command is visible by default. */
   async reset(): Promise<void> {
-    await browser.storage.sync.remove(Object.values(StorageKeys));
+    await browser.storage.local.remove(Object.values(StorageKeys));
   },
 };

@@ -401,7 +401,7 @@ export async function ensureCustomFormatsVisible(
     for (const slot of slots) {
       assignments[`custom_formats.${ctx}.${slot}.show_in_menus`] = true;
     }
-    await chrome.storage.sync.set(assignments);
+    await chrome.storage.local.set(assignments);
   }, { ctx: context, slots });
 }
 

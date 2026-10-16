@@ -19,18 +19,18 @@ export default {
   },
 
   async setLinkTextAlwaysEscapeBrackets(value: boolean): Promise<void> {
-    await browser.storage.sync.set({
+    await browser.storage.local.set({
       [SKLinkTextAlwaysEscapeBrackets]: value,
     });
   },
 
   /** Removes the key so browser.storage.get supplies its default; no legacy key is retired. */
   async reset(): Promise<void> {
-    await browser.storage.sync.remove(this.keys);
+    await browser.storage.local.remove(this.keys);
   },
 
   async getAll(): Promise<Settings> {
-    const all = await browser.storage.sync.get(this.defaultSettings);
+    const all = await browser.storage.local.get(this.defaultSettings);
 
     return {
       alwaysEscapeLinkBrackets: all[SKLinkTextAlwaysEscapeBrackets] as boolean,

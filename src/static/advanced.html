@@ -53,32 +53,12 @@
       <div class="box content">
         <h2 class="title is-3">Advanced</h2>
 
-        <form id="form-link-text-always-escape-brackets" class="field">
-          <label class="label">Escaping</label>
-          <div class="control">
-            <label class="checkbox"><input type="checkbox" name="enabled"/> Always escape brackets in link text (<code>[]</code>
-              becomes <code>\[\]</code>)</label>
-          </div>
-          <p class="help">
-            CommonMark allows balanced brackets <code>[]</code> in link text
-            (e.g. <code>[[JIRA-123] My Project](https://link/)</code>).
-            If your Markdown processor does not support this use case, you can enable this feature
-            so that Copy as Markdown always escape brackets in the link text.
-          </p>
-          <p class="help">
-            This applies to generated-link workflows — Single Link, Multiple Links, and custom formats —
-            and does not affect Copy Selection as Markdown, which escapes according to its own conversion rules.
-          </p>
-        </form>
-      </div>
-      <div class="field is-grouped">
-        <div class="control">
-          <button id="reset" data-testid="reset-advanced" type="button" class="button is-outlined is-danger">Restore Advanced Defaults</button>
-        </div>
+        <h3>Safe Markdown output</h3>
+        <p>Link and image labels always escape Markdown brackets and HTML. Executable URL schemes are omitted.</p>
+        <p>Selection conversion rejects content that exceeds its size, nesting, or table limits. Settings and custom formats stay on this device.</p>
       </div>
     </div>
   </div>
 </div>
-<script src="../ui/advanced.js" type="module"></script>
 </body>
 </html>

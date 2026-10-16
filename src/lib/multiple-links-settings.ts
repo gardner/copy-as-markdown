@@ -29,7 +29,7 @@ export default {
    * they may belong to a newer version.
    */
   async getAll(): Promise<MultipleLinksMarkdownSettings> {
-    const stored = await browser.storage.sync.get(this.keys);
+    const stored = await browser.storage.local.get(this.keys);
     const bulletListMarker = stored[MultipleLinksSettingKeys.bulletListMarker];
     const tabGroupIndentation = stored[MultipleLinksSettingKeys.tabGroupIndentation];
 
@@ -44,10 +44,10 @@ export default {
   },
 
   async setBulletListMarker(value: BulletListMarker): Promise<void> {
-    await browser.storage.sync.set({ [MultipleLinksSettingKeys.bulletListMarker]: value });
+    await browser.storage.local.set({ [MultipleLinksSettingKeys.bulletListMarker]: value });
   },
 
   async setTabGroupIndentation(value: TabGroupIndentationStyle): Promise<void> {
-    await browser.storage.sync.set({ [MultipleLinksSettingKeys.tabGroupIndentation]: value });
+    await browser.storage.local.set({ [MultipleLinksSettingKeys.tabGroupIndentation]: value });
   },
 };

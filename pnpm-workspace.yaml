@@ -1,0 +1,11 @@
+ignoreScripts: true
+
+# Release tooling uses only web-ext's exported Mozilla submission client.
+# Exclude Android/debug runners entirely; adbkit brings vulnerable node-forge.
+overrides:
+  'web-ext>@devicefarmer/adbkit': '-'
+  'web-ext>fx-runner': '-'
+
+patchedDependencies:
+  '@truto/turndown-plugin-gfm@1.0.2': patches/@truto__turndown-plugin-gfm@1.0.2.patch
+  dompurify@3.4.17: patches/dompurify@3.4.17.patch

@@ -49,7 +49,7 @@ async function loadPage(): Promise<void> {
 
 function mockBrowser(): void {
   (globalThis as any).browser = {
-    storage: { sync: { onChanged: { addListener: vi.fn() } } },
+    storage: { local: { onChanged: { addListener: vi.fn() } } },
   };
 }
 

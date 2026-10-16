@@ -1,6 +1,6 @@
 {
-  "name": "Copy as Markdown",
-  "version": "3.8.0",
+  "name": "Copy as Markdown (Gardner)",
+  "version": "3.8.1",
   "manifest_version": 3,
   "description": "Copy Link or Image as Markdown code",
   "permissions": [
@@ -117,8 +117,19 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "jid1-tfBgelm3d4bLkQ@jetpack",
-      "strict_min_version": "139.0"
+      "id": "copy-as-markdown@gardner.github.io",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    },
+    "gecko_android": {
+      "strict_min_version": "142.0"
     }
+  },
+  "content_security_policy": {
+    "extension_pages": "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
   }
 }

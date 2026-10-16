@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   disableUiIfPermissionsNotGranted(statuses);
 });
 
-browser.storage.sync.onChanged.addListener(async (changes) => {
+browser.storage.local.onChanged.addListener(async (changes) => {
   const hasSettingsChanged = Object.keys(changes).some(key => MultipleLinksSettings.keys.includes(key));
   if (hasSettingsChanged) {
     await refresh();

@@ -116,7 +116,7 @@ test.describe('Format options pages - UI Tests', () => {
     await page.getByTestId('reset-multiple-links').click();
     await page.waitForTimeout(500);
 
-    expect(await page.evaluate(() => chrome.storage.sync.get([
+    expect(await page.evaluate(() => chrome.storage.local.get([
       'builtin.style.tabTitleList',
       'custom_formats.multiple-links.1.name',
       'custom_formats.multiple-links.1.template',
